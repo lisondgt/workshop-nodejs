@@ -42,16 +42,25 @@ export class ArgsParser implements IArgsParser {
         return this.arg.indexOf('server') !== -1;
     }
     getListeningPort(): number {
-        for (args of this.arg) {
-            if (args.match(/[0-9]+/g)) {
-                return args[3];
-            } else {
-                return 23456;
-            }
+        let port = this.arg.find(arg =>{
+            return Number.isInteger(Number(arg)) && (parseInt(arg) >= 10000 && parseInt(arg) <= 65535)
+        })
+
+        if(port){
+            return parseInt(port);
         }
+        return 23456
     }
     getAddress(): string | false {
-        throw new Error("Method not implemented.");
+        let IPv4 = this.arg.find(arg =>{
+            return isIPv4(arg);
+        })
+
+        if(IPv4){
+            return IPv4;
+        }
+
+        return false;
     }
 
 }

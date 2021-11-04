@@ -1,4 +1,4 @@
-import * as net from "net";
+import * as ServNet from "net";
 
 export interface IServerConfig {
     /**
@@ -79,15 +79,41 @@ export interface IServer {
 
 export class Server implements IServer {
 
-    net = require('net');
+    private listeningPort: number
+    private server: ServNet
 
-    constructor(net: string[]) {
-        this.net = net
+    constructor(serverConfig: IServerConfig) {
+        this.listeningPort = serverConfig.listeningPort
 
-        let server = this.net.createConnection()
-        server.listen('/tmp/echo.sock', () => {
-            console.log('connected to server!');
+        if (typeof serverConfig.log !== "undefined") {
+            this.log = serverConfig.log
+        }
+
+        if (typeof serverConfig.error !== "undefined") {
+            this.error = serverConfig.error
+        }
+
+        this.onData = serverConfig.onData
+        this.server = net.createServer()
+        this.server.on('error', (error) => {
+            this.log(error)
         })
+
+        this.server.on('connection', (socket) => {
+            socket.on("data", (data) => this.onData(socket, data.toString()))
+        })
+    }
+
+    readonly onData = (socket: net.Socket, data: string) => { }
+    readonly log = (...args: Array<any>) => { }
+    readonly error = (...args: Array<any>) => { }
+
+    listen(): void {
+        this.server.listen(this.listeningPort);
+    }
+
+    close(): void {
+        this.server.close();
     }
 
 }

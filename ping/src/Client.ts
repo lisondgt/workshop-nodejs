@@ -1,4 +1,5 @@
 import * as net from "net";
+import {IServer} from "./Server";
 
 export interface IClientConfig {
     /**
@@ -41,4 +42,33 @@ export interface IClient {
      * @memberof IClient
      */
     ping (): Promise<number | false>
+}
+
+export class Client implements IClient {
+    private port: number;
+    private address: string;
+    private connexion: net.Socket
+
+
+    constructor(config: IClientConfig) {
+        this.port = config.port;
+        this.address = config.address;
+        this.connexion = net.createConnection(this.port, this.address);
+    }
+
+    ping(): Promise<number | false> {
+        const start = Date.now();
+        this.connexion.write("PING");
+        return new Promise((resolve: (value: number) => void, reject: (value: false) => void) => {
+            this.connexion.on('data', (data) => {
+                if (data.toString() === "PONG") {
+                    const end = Date.now()
+                    resolve(end - start)
+                }
+                else {
+                    reject(false)
+                }
+            })
+        })
+    }
 }
