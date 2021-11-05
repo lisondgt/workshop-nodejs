@@ -75,9 +75,6 @@ export class WSServer implements IWSServer {
         let room2 = new Room({ id: uuidv4(), title: 'Room 2', usersCollection: this.onlineUsers, urlImage: 'default-image.jpg' });
         this._rooms.add(room2);
 
-        // let user1 = new User({ id: user.id, pseudo: 'John Doe', collection: this.onlineUsers, imgUrl: 'default-image.jpg' });
-        // this._users.add(user1);
-
         this.server.on("connection", (socket: Socket) => {
 
             socket.on('_handleUsers', (pseudo: string) => this._handleUsers(socket,pseudo));

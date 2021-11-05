@@ -13,6 +13,7 @@ let input = document.createElement("input");
 input.type = "text";
 input.id = "input";
 input.className = "form-control";
+input.placeholder = "Enter message";
 
 let button = document.createElement("button");
 button.type = "submit";

@@ -1,4 +1,5 @@
 import { IUserCollection } from "./UserCollection";
+import { IMsg } from "./Message";
 
 export interface IRoomConfig {
     /**
@@ -91,6 +92,15 @@ export interface IRoom {
      */
     readonly urlImage: string | false
     /**
+     * Tableau comprenant tous les messages de la room
+     */
+    messages:IMsg[];
+    /**
+     * Ajoute un nouveau message à la room
+     * @param msg
+     */
+    addMsg(msg:IMsg):void
+    /**
      * Joindre l'utilisateur d'identifiant `userId` à ce salon
      *
      * @param {string} userId
@@ -115,6 +125,7 @@ export class Room implements IRoom {
     readonly adminId: string | false
     readonly urlImage: string | false
     usersCollection: IUserCollection
+    messages: IMsg[];
 
     constructor(config:IRoomConfig) {
         this.id = config.id
@@ -124,6 +135,11 @@ export class Room implements IRoom {
         this.urlImage = config.urlImage || false
         this.usersCollection = config.usersCollection
         this.public = !!config.adminId
+        this.messages = [];
+    }
+
+    addMsg(msg:IMsg){
+        this.messages.push(msg);
     }
 
     joinUser(userId: string): boolean {
