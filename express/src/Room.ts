@@ -136,7 +136,7 @@ export class Room implements IRoom {
 
     leaveUser(userId: string): void {
         if (userId in this.joinedUsers) {
-            this.joinedUsers.splice(this.joinedUsers.indexOf(userId));
+            this.joinedUsers.splice(this.joinedUsers.indexOf(userId),1);
         }
     }
 }

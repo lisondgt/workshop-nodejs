@@ -11,48 +11,42 @@
 
 <div class="container-all">
     <div class="list-rooms">
-        <div class="room-content">
+<!--        <div class="room-content">-->
+<!--            <div class="col-img">-->
+<!--                <img src="default-image.jpg">-->
+<!--            </div>-->
+<!--            <div class="col-right">-->
+<!--                <p class="title-room">Room 1</p>-->
+<!--                <p class="date">09:55</p>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+    <div class="conversation">
+        <ul id="messages"></ul>
+<!--        <form action="" id="form">-->
+<!--            <input id="input" class="form-control" autocomplete="off" placeholder="Enter message">-->
+<!--            <button type="submit" class="btn btn-primary">Send</button>-->
+<!--        </form>-->
+        <form action="" id="form-login">
+            <input id="input-login" type="text" class="form-control" placeholder="pseudo" />
+            <button type="submit" class="btn btn-primary">Log in</button>
+        </form>
+    </div>
+    <div class="list-users">
+        <div class="user-content">
             <div class="col-img">
                 <img src="default-image.jpg">
             </div>
             <div class="col-right">
-                <p class="title-room">Room 1</p>
-                <p class="date">09:55</p>
+                <p class="user-name">John Doe</p>
             </div>
         </div>
-    </div>
-    <div class="conversation">
-        <ul id="messages"></ul>
-        <form action="" id="form">
-            <input id="input" class="form-control" autocomplete="off" placeholder="Enter message">
-            <button type="submit" class="btn btn-primary">Send</button>
-        </form>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 <script src="socket.io.js"></script>
-<script>
-    var socket = io();
-    var messages = document.getElementById('messages');
-    var form = document.getElementById('form');
-    var input = document.getElementById('input');
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (input.value) {
-            socket.emit('chat', input.value);
-            input.value = '';
-        }
-    });
-
-    socket.on('chat', function(msg) {
-        var item = document.createElement('li');
-        item.textContent = msg;
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-    });
-</script>
+<script src="script.js"></script>
 </body>
 </html>

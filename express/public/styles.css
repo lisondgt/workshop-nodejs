@@ -5,7 +5,7 @@
 }
 
 .container-all .list-rooms {
-    flex: 0 0 20%;
+    flex: 0 0 15%;
     border-right: #ececec 1px solid;
     overflow-y: scroll;
 }
@@ -51,7 +51,7 @@
 }
 
 .container-all .conversation {
-    flex: 0 0 80%;
+    flex: 0 0 70%;
     position: relative;
 }
 
@@ -70,4 +70,48 @@
     display: flex;
     align-items: center;
     padding: 10px;
+}
+
+.container-all .conversation form .btn {
+    white-space: nowrap;
+}
+
+.container-all .list-users {
+    flex: 0 0 15%;
+    border-left: #ececec 1px solid;
+    overflow-y: scroll;
+}
+
+.container-all .list-users .user-content {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.container-all .list-users .user-content:hover {
+    background-color: #eaeaea;
+}
+
+.container-all .list-users .user-content .col-img {
+    padding-right: 10px;
+}
+
+.container-all .list-users .user-content .col-img img {
+    max-width: 100%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.container-all .list-users .user-content .col-right {
+    flex: auto;
+}
+
+.container-all .list-users .user-content .col-right .user-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 0;
 }
