@@ -18,8 +18,9 @@
     transition: all .2s ease;
 }
 
-.container-all .list-rooms .room-content:hover {
-    background-color: #eaeaea;
+.container-all .list-rooms .room-content:hover,
+.container-all .list-rooms .room-content.selected{
+    background-color: #f3f3f3;
 }
 
 .container-all .list-rooms .room-content .col-img {

@@ -65,7 +65,7 @@ export class WSServer implements IWSServer {
         this._users = new Users()
         this._rooms = new Rooms()
         this.room1 = new Room({ id: uuidv4(), title: 'Accueil', usersCollection: this.onlineUsers });
-        this.rooms.add(this.room1);
+        this._rooms.add(this.room1);
 
         this._start();
     }
@@ -73,7 +73,10 @@ export class WSServer implements IWSServer {
     private _start (): void {
 
         let room2 = new Room({ id: uuidv4(), title: 'Room 2', usersCollection: this.onlineUsers, urlImage: 'default-image.jpg' });
-        this.rooms.add(room2);
+        this._rooms.add(room2);
+
+        // let user1 = new User({ id: user.id, pseudo: 'John Doe', collection: this.onlineUsers, imgUrl: 'default-image.jpg' });
+        // this._users.add(user1);
 
         this.server.on("connection", (socket: Socket) => {
 
@@ -108,12 +111,18 @@ export class WSServer implements IWSServer {
 
     private _handleUsers (socket: Socket, pseudo: string): void {
         let user = new User({ pseudo, id: socket.id, collection: this.onlineUsers, imgUrl: 'default-image.jpg' });
+        this.onlineUsers.add(user);
         this.room1.joinUser(user.id);
 
         socket.join(this.room1.id);
 
         this.server.to(this.room1.id).emit('logged', { user: { pseudo }, timer: Date.now(),selectedRoom:this.room1.id });
-        socket.emit('initRooms', this.rooms);
+        socket.emit('initRooms', this.rooms.all.map (id => {
+            let room = this.rooms.get(id);
+            if (room) {
+                return { id: room.id, title: room.title, urlImage: room.urlImage };
+            }
+        }));
         socket.emit('initUsers', this.room1.joinedUsers.map(id => {
             let user = this.onlineUsers.get(id);
             if (user) {

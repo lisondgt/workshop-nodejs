@@ -77,7 +77,6 @@ function appendLi(msg, classes, img, timer) {
 }
 
 socket.on("_handleChat", function ({msg,user}) {
-    console.log(msg.msg);
     appendLi(msg.msg, ["self"], user.imgUrl,msg.timestamp);
 });
 
@@ -90,45 +89,42 @@ socket.on("logged", function ({user,timer,selectedRoom}) {
 
 socket.on('initRooms',function(rooms){
 
-    let roomsElement = document.getElementsByClassName('list-rooms');
-
     let count = 0;
 
-    for(let room in rooms._rooms) {
-        let roomElement = document.createElement('div');
-        roomElement.classList.add('room-content');
-        roomElement.id = room;
+    for(let room of rooms) {
+
+        let roomContent = document.createElement('div');
+        roomContent.classList.add('room-content');
+        roomContent.id = room;
 
         if(count === 0){
-            roomElement.classList.add('selected');
+            roomContent.classList.add('selected');
             selectedRoom = room;
         }
 
-        let src= rooms._rooms[room].urlImage;
+        let src= rooms.urlImage;
 
         let img = document.createElement('img');
         img.src = src ? src : "default-image.jpg";
 
-        roomElement.addEventListener('click',function(){
-            document.querySelector('.room.selected').classList.remove('selected');
-            roomElement.classList.add('selected');
-            selectedRoom = roomElement.id;
+        roomContent.innerHTML = "<div class=\"col-img\">" +
+            "<img src=" + img.src + ">" +
+            "</div>" +
+            "<div class=\"col-right\">" +
+            "<p class=\"title-room\">" + room.title + "</p>" +
+            "<p class=\"date\">09:55</p>" +
+            "</div>";
+
+        document.querySelector(".list-rooms").appendChild(roomContent);
+
+        roomContent.addEventListener('click',function(){
+            document.querySelector('.room-content.selected').classList.remove('selected');
+            roomContent.classList.add('selected');
+            selectedRoom = roomContent.id;
 
             socket.emit('chooseRoom',selectedRoom);
 
         })
-
-        roomElement.innerHTML = "<div class=\"col-img\">" +
-            "<img src=" + img.src + ">" +
-            "</div>" +
-            "<div class=\"col-right\">" +
-            "<p class=\"title-room\">" + rooms._rooms[room].title + "</p>" +
-            "<p class=\"date\">09:55</p>" +
-            "</div>";
-
-        console.log(roomsElement);
-
-        roomElement.appendChild(roomsElement);
 
         count++;
     }
@@ -143,19 +139,20 @@ socket.on('initUsers',(users)=>{
 
         if(!document.getElementById(user.id)){
             let userElement = document.createElement('div');
-            userElement.classList.add('user');
+            userElement.classList.add('user-content');
             userElement.id = user.id;
 
             let img = document.createElement('img');
             img.src = user.imgUrl ? user.imgUrl : "default-image.jpg";
 
-            let p = document.createElement('p');
-            p.textContent = user.pseudo;
+            userElement.innerHTML = "<div class=\"col-img\">" +
+                "<img src=" + img.src + ">" +
+                "</div>" +
+                "<div class=\"col-right\">" +
+                "<p class=\"user-name\">" + user.pseudo + "</p>" +
+                "</div>";
 
-            userElement.appendChild(img);
-            userElement.appendChild(p);
-
-            usersElement.appendChild(userElement);
+            document.querySelector(".list-users").appendChild(userElement);
         }
 
     }

@@ -56,6 +56,7 @@ export class Users implements IUserCollection {
     add (user: IUser): void {
         if (!(user.id in this._users)) {
             this._ids.push(user.id)
+            this._users[user.id] = user
         }
     }
 
